@@ -19,7 +19,9 @@ function defaultGameState() {
     money: 50,
     level: 1,
     xp: 0,
-    inventory: { food: 0, water: 0 }
+    inventory: { food: 0, water: 0 },
+    missionProgress: {},
+    completedMissions: []
   };
 }
 
@@ -28,7 +30,14 @@ function loadGameState() {
     const raw = localStorage.getItem(GAME_STORAGE_KEY);
     if (!raw) return defaultGameState();
     const data = JSON.parse(raw);
-    return { ...defaultGameState(), ...data, inventory: { ...defaultGameState().inventory, ...(data.inventory || {}) } };
+    const defaults = defaultGameState();
+    return {
+      ...defaults,
+      ...data,
+      inventory: { ...defaults.inventory, ...(data.inventory || {}) },
+      missionProgress: { ...defaults.missionProgress, ...(data.missionProgress || {}) },
+      completedMissions: Array.isArray(data.completedMissions) ? data.completedMissions : []
+    };
   } catch {
     return defaultGameState();
   }
