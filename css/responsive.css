@@ -1,0 +1,297 @@
+/* Petit Poodle — layout responsivo (celulares pequenos até tablets) */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  padding-left: max(12px, env(safe-area-inset-left));
+  padding-right: max(12px, env(safe-area-inset-right));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* Telas estreitas (iPhone SE, Galaxy Fold fechado, etc.) */
+@media (max-width: 380px) {
+  body.page-home {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  body.page-home .card {
+    padding: 28px 20px 24px;
+    border-radius: 22px;
+    gap: 16px;
+  }
+
+  body.page-home h1 {
+    font-size: 26px;
+  }
+
+  body.page-home .poodle-preview,
+  body.page-home .poodle-svg-preview {
+    width: 100px;
+    height: 100px;
+  }
+
+  body.page-home .input-wrap input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  body.page-game #app,
+  body.page-shop #app {
+    gap: 10px;
+  }
+
+  body.page-game #poodle-name,
+  body.page-shop #shop-title {
+    font-size: 18px;
+  }
+
+  body.page-game #back-btn,
+  body.page-shop .nav-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  body.page-game #level-number {
+    font-size: 16px;
+  }
+
+  body.page-game #xp-text {
+    font-size: 10px;
+    min-width: 56px;
+  }
+
+  body.page-game #stats-row {
+    gap: 5px;
+  }
+
+  body.page-game .stat-card {
+    padding: 6px 3px;
+  }
+
+  body.page-game .stat-lbl {
+    font-size: 9px;
+  }
+
+  body.page-game .stat-num {
+    font-size: 10px;
+  }
+
+  body.page-game #money-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.page-game #shop-link {
+    font-size: 12px;
+    padding: 7px 12px;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  body.page-game #money-card {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  body.page-game .stock-pill {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  body.page-game .stock-pill .stock-count {
+    font-size: 18px;
+  }
+
+  body.page-game .stock-pill .stock-unit {
+    font-size: 9px;
+  }
+
+  body.page-game #scene {
+    width: min(200px, 52vw);
+    height: min(210px, 54vw);
+  }
+
+  body.page-game #poodle-img {
+    width: min(140px, 38vw);
+    height: auto;
+  }
+
+  body.page-game #bubble {
+    right: -8px;
+    font-size: 12px;
+  }
+
+  body.page-game #msg-box {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  body.page-game .nav-arrow {
+    width: 34px;
+    height: 34px;
+  }
+
+  body.page-game .act-btn {
+    padding: 12px 6px 10px;
+    min-height: 44px;
+  }
+
+  body.page-game .act-btn .lbl {
+    font-size: 12px;
+  }
+
+  body.page-game .act-btn .sub {
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  body.page-game .btn-grid.cols2 {
+    grid-template-columns: 1fr;
+  }
+
+  body.page-shop #top-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.page-shop .nav-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  body.page-shop #money-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  body.page-shop #poodle-hint {
+    max-width: none;
+    text-align: left;
+  }
+
+  body.page-shop .shop-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  body.page-shop .shop-item-price {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  body.page-shop .shop-buy-btn {
+    min-height: 44px;
+    padding: 8px 16px;
+  }
+}
+
+/* Altura baixa (landscape em celular) */
+@media (max-height: 520px) and (orientation: landscape) {
+  body.page-home {
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
+  }
+
+  body.page-home .card {
+    padding: 20px 24px;
+    margin: 8px 0;
+  }
+
+  body.page-home .poodle-preview,
+  body.page-home .poodle-svg-preview {
+    width: 80px;
+    height: 80px;
+  }
+
+  body.page-game {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  body.page-game #scene {
+    width: 140px;
+    height: 150px;
+  }
+
+  body.page-game #poodle-img {
+    width: 100px;
+    height: auto;
+  }
+
+  body.page-game #app {
+    gap: 8px;
+  }
+}
+
+/* Tablets e telas maiores */
+@media (min-width: 600px) {
+  body.page-game,
+  body.page-shop {
+    padding-top: 28px;
+  }
+
+  body.page-game #app,
+  body.page-shop #app {
+    max-width: 480px;
+  }
+
+  body.page-home .card {
+    max-width: 440px;
+    padding: 48px 44px 44px;
+  }
+}
+
+/* Toques confortáveis em todos os celulares */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .nav-btn,
+  #shop-link,
+  .nav-arrow,
+  .act-btn,
+  .shop-buy-btn,
+  #back-btn {
+    min-height: 44px;
+  }
+
+  body.page-game .act-btn:hover,
+  body.page-shop .shop-item:hover {
+    transform: none;
+  }
+}
+
+/* Nomes longos no topo */
+@media (max-width: 420px) {
+  body.page-game #poodle-name {
+    flex: 1;
+    min-width: 0;
+  }
+  body.page-game #name-display {
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+  }
+}
+
+/* Evitar overflow horizontal */
+body.page-home,
+body.page-game,
+body.page-shop {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body.page-home {
+  overflow-y: auto;
+}

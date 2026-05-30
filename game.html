@@ -2,9 +2,18 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#fdf0f8"/>
+<meta name="description" content="Cuide do seu poodle — alimente, brinque e dê carinho!"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Petit Poodle"/>
+<link rel="icon" href="icons/icon-poodle.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="icons/icon-poodle.svg"/>
+<link rel="manifest" href="icons/site.webmanifest"/>
 <title>Petit Poodle</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/hearts.css"/>
+<link rel="stylesheet" href="css/responsive.css"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,10 +34,12 @@
     font-family: 'Nunito', sans-serif;
     background: var(--bg);
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding: 20px 16px 32px;
+    padding-top: max(20px, env(safe-area-inset-top));
   }
 
   .bg-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
@@ -48,6 +59,8 @@
   #top-bar {
     width: 100%;
     display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
     padding: 0 2px;
   }
   #poodle-name {
@@ -135,9 +148,32 @@
   #money-row {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
     margin-top: -4px;
   }
+  #shop-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #e65100;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 0.5px solid rgba(230, 81, 0, 0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.12);
+  }
+  #shop-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(255, 152, 0, 0.2);
+  }
+  #shop-link:active { transform: scale(0.97); }
   #money-card {
     background: linear-gradient(135deg, #fff8e1, #fff3cd);
     border-radius: 20px;
@@ -167,7 +203,7 @@
     position: relative; width: 200px; height: 210px; flex-shrink: 0;
   }
   #bubble {
-    position: absolute; top: 2px; right: -18px;
+    position: absolute; top: 2px; right: max(-18px, -4vw);
     background: white; border-radius: 20px; padding: 3px 10px;
     font-size: 14px; border: 0.5px solid rgba(210,160,200,0.4); z-index: 2;
     transition: transform 0.3s;
@@ -259,17 +295,59 @@
   .act-btn .sub { font-size: 10px; color: var(--muted); font-weight: 600; }
   .act-btn.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
-  .inventory-badge {
-    background: #e8eaf6;
-    border-radius: 12px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #3949ab;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+  #stock-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
+  .stock-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 0.5px solid rgba(210,160,200,0.35);
+    background: white;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .stock-pill .stock-emoji { font-size: 22px; line-height: 1; }
+  .stock-pill .stock-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+  .stock-pill .stock-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+  }
+  .stock-pill .stock-count {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--text);
+  }
+  .stock-pill .stock-unit {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .stock-pill.stock-food { border-color: rgba(229, 115, 115, 0.35); }
+  .stock-pill.stock-water { border-color: rgba(100, 181, 246, 0.35); }
+  .stock-pill.stock-empty {
+    background: #fafafa;
+    border-style: dashed;
+  }
+  .stock-pill.stock-empty .stock-count { color: #c62828; }
+  .stock-pill.stock-empty .stock-unit { color: #e57373; }
+
+  .act-btn .sub.stock-ok { color: #2e7d32; }
+  .act-btn .sub.stock-low { color: #e65100; }
+  .act-btn .sub.stock-none { color: #c62828; }
 
   @keyframes floatup { 0%{opacity:1;transform:translateY(0) translateX(-50%)} 100%{opacity:0;transform:translateY(-52px) translateX(-50%)} }
   @keyframes boing { 0%,100%{transform:translateX(-50%) scale(1)} 35%{transform:translateX(-50%) scale(1.1) translateY(-10px)} 65%{transform:translateX(-50%) scale(0.94)} }
@@ -290,170 +368,9 @@
     animation: levelUp 0.5s ease;
   }
 
-  /* Estilos do Mercadinho */
-.shop-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 10px;
-  background: #fafafa;
-  border-radius: 12px;
-  border: 0.5px solid rgba(210,160,200,0.2);
-  transition: all 0.2s ease;
-}
-
-.shop-item:hover {
-  background: #fff8f0;
-  transform: translateX(4px);
-  border-color: rgba(240,98,146,0.3);
-}
-
-.shop-item-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.shop-item-icon {
-  font-size: 28px;
-  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
-}
-
-.shop-item-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.shop-item-name {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 14px;
-}
-
-.shop-item-desc {
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.shop-item-price {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  color: #f57c00;
-  font-size: 14px;
-  background: #fff3e0;
-  padding: 4px 8px;
-  border-radius: 20px;
-}
-
-.shop-buy-btn {
-  background: linear-gradient(135deg, #ffd700, #ffb300);
-  border: none;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  color: #5d4037;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.shop-buy-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #ffe082, #ffc107);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-.shop-buy-btn:active {
-  transform: scale(0.95);
-}
-
-.shop-buy-btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Badge de inventário */
-.inventory-badge {
-  background: linear-gradient(135deg, #e8eaf6, #c5cae9);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #3949ab;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  border: 0.5px solid rgba(57, 73, 171, 0.2);
-}
-
-.inventory-badge::before {
-  content: "📦";
-  font-size: 12px;
-}
-
-/* Container do inventário na loja */
-.shop-inventory {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed rgba(210,160,200,0.3);
-}
-
-/* Dica do mercadinho */
-.shop-tip {
-  margin-top: 16px;
-  padding: 10px 12px;
-  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-  border-radius: 12px;
-  text-align: center;
-  font-size: 11px;
-  color: #e65100;
-  font-weight: 600;
-  border: 0.5px solid rgba(230, 81, 0, 0.2);
-}
-
-/* Seção do mercadinho no carousel */
-.section-shop {
-  background: white;
-  border-radius: 16px;
-  padding: 4px;
-}
-
-/* Efeito de moeda flutuando */
-@keyframes coinFloat {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.8);
-  }
-}
-
-.coin-earn {
-  position: absolute;
-  font-size: 14px;
-  pointer-events: none;
-  animation: coinFloat 0.8s ease-out forwards;
-  font-weight: bold;
-  color: #ffd700;
-  text-shadow: 0 0 2px #ff8f00;
-}
-
-
 </style>
 </head>
-<body>
+<body class="page-game">
 
 <div class="bg-blobs">
   <div class="blob blob1"></div>
@@ -516,6 +433,7 @@
   </div>
 
   <div id="money-row">
+    <a id="shop-link" href="shop.html">🛒 Mercadinho</a>
     <div id="money-card">
       <span id="money-icon">🪙</span>
       <span id="money-amount">50</span>
@@ -523,7 +441,27 @@
     </div>
   </div>
 
+  <div id="stock-row">
+    <div class="stock-pill stock-food" id="stock-food-pill">
+      <span class="stock-emoji">🍖</span>
+      <div class="stock-info">
+        <span class="stock-label">Ração</span>
+        <span class="stock-count" id="stock-food-count">0</span>
+        <span class="stock-unit" id="stock-food-unit">no estoque</span>
+      </div>
+    </div>
+    <div class="stock-pill stock-water" id="stock-water-pill">
+      <span class="stock-emoji">💧</span>
+      <div class="stock-info">
+        <span class="stock-label">Água</span>
+        <span class="stock-count" id="stock-water-count">0</span>
+        <span class="stock-unit" id="stock-water-unit">no estoque</span>
+      </div>
+    </div>
+  </div>
+
   <div id="scene">
+    <div id="hearts-layer" aria-hidden="true"></div>
     <div id="bubble">😊</div>
     <div id="zzz">💤</div>
     <div id="itemanim"></div>
@@ -554,46 +492,42 @@
 
 </div>
 
+<script src="js/game-state.js"></script>
 <script>
-// Estado do jogo
-const S = { 
-  hunger: 0,     // COMEÇA EM 0!
-  water: 0,      // COMEÇA EM 0!
-  happy: 80, 
-  energy: 90, 
-  sleeping: false, 
-  money: 50,
-  level: 1,
-  xp: 0
+const loaded = loadGameState();
+const S = {
+  hunger: loaded.hunger,
+  water: loaded.water,
+  happy: loaded.happy,
+  energy: loaded.energy,
+  sleeping: false,
+  money: loaded.money,
+  level: loaded.level,
+  xp: loaded.xp
 };
-
-// XP necessário por nível
-function getXpNeeded(level) {
-  return Math.floor(100 + (level - 1) * 25);
-}
+let inventory = loaded.inventory;
 
 let sleepInt = null, curSec = 0, sliding = false;
 let poodleName = '', isTimao = false;
 
-// Inventário de alimentos e água comprados
-let inventory = {
-  food: 0,
-  water: 0
-};
+function persistGame() {
+  saveGameState({
+    hunger: S.hunger,
+    water: S.water,
+    happy: S.happy,
+    energy: S.energy,
+    sleeping: S.sleeping,
+    money: S.money,
+    level: S.level,
+    xp: S.xp,
+    inventory: { ...inventory }
+  });
+}
 
 const SKINS = {
   normal:  { default: 'poodle.png',        sad: 'poodleTriste.png',     happy: 'poodleSatisfeito.png' },
   timao:   { default: 'timao.png',          sad: 'timaoTriste.png',      happy: 'timaoSatisfeito.png'  }
 };
-
-// Itens do mercadinho
-const SHOP_ITEMS = [
-  { id: 'food', name: '🍖 Ração', desc: '+25 de fome', icon: '🍖', price: 15, effect: { hunger: 25 }, type: 'food' },
-  { id: 'water', name: '💧 Água', desc: '+20 de água', icon: '💧', price: 10, effect: { water: 20 }, type: 'water' },
-  { id: 'treat', name: '🍬 Petisco', desc: '+15 em tudo', icon: '🍬', price: 20, effect: { hunger: 15, water: 15, happy: 15, energy: 15 }, type: 'treat' },
-  { id: 'food_pack', name: '📦 Pacote Ração', desc: '+50 de fome (3 usos)', icon: '📦', price: 35, effect: { hunger: 50 }, type: 'food', uses: 3 },
-  { id: 'water_pack', name: '💧 Fardo de Água', desc: '+40 de água (3 usos)', icon: '💧', price: 25, effect: { water: 40 }, type: 'water', uses: 3 }
-];
 
 const SECTIONS = [
   {
@@ -602,8 +536,8 @@ const SECTIONS = [
     icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f06292" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>',
     cols: 'cols2',
     btns: [
-      { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e57373" stroke-width="1.5"><path d="M2 12h20M2 12c0-5 4-9 10-9M2 12c0 5 4 9 10 9M22 12c0-5-4-9-10-9M22 12c0 5-4 9-10 9"/></svg>', lbl:'Comer', sub:'usar ração', fn:'useFood()' },
-      { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#64b5f6" stroke-width="1.5"><path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z"/></svg>', lbl:'Beber', sub:'usar água', fn:'useWater()' },
+      { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e57373" stroke-width="1.5"><path d="M2 12h20M2 12c0-5 4-9 10-9M2 12c0 5 4 9 10 9M22 12c0-5-4-9-10-9M22 12c0 5-4 9-10 9"/></svg>', lbl:'Comer', fn:'useFood()', stock: 'food' },
+      { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#64b5f6" stroke-width="1.5"><path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z"/></svg>', lbl:'Beber', fn:'useWater()', stock: 'water' },
       { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ba68c8" stroke-width="1.5"><path d="M11 5.882V19.24a1.76 1.76 0 0 1-3.417.592l-2.147-6.15M18 13a4 4 0 0 0-4-4H7"/></svg>', lbl:'Carinho', sub:'+5 humor + XP', fn:'petPoodle()' },
       { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#81c784" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 5"/><path d="M12 13l3 5"/></svg>', lbl:'Passear', sub:'+25 humor', fn:'walk()' },
     ]
@@ -619,14 +553,6 @@ const SECTIONS = [
       { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4fc3f7" stroke-width="1.5"><path d="M9 6V3.5a2.5 2.5 0 0 1 5 0V6"/><path d="M3 12h18v3a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-3z"/></svg>', lbl:'Banho', sub:'+20 humor', fn:'bath()' },
       { icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9575cd" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>', lbl:'Dormir', sub:'+30 energia', fn:'toggleSleep()', id:'sleep-btn' },
     ]
-  },
-  {
-    name: 'mercadinho',
-    desc: 'compre comida e água! 🛒',
-    icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
-    cols: 'cols1',
-    btns: [],
-    isShop: true
   }
 ];
 
@@ -653,17 +579,90 @@ const MSGS = {
 };
 
 function rnd(a) { return a[Math.floor(Math.random()*a.length)]; }
-function clamp(v) { return Math.max(0, Math.min(100, v)); }
+function clamp(v) { return clampStat(v); }
 function msg(t) { document.getElementById('msg-box').textContent = t; }
+
+const HEART_CHARS = ['💕', '💖', '💗', '❤️', '🩷'];
+
+function spawnHearts(count) {
+  const layer = document.getElementById('hearts-layer');
+  const scene = document.getElementById('scene');
+  const wrap = document.getElementById('poodle-wrap');
+  const sceneRect = scene.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const centerX = wrapRect.left + wrapRect.width / 2 - sceneRect.left;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'heart-particle' + (Math.random() > 0.6 ? ' large' : Math.random() > 0.5 ? '' : ' small');
+    if (Math.random() > 0.4) el.classList.add('burst');
+    el.textContent = HEART_CHARS[Math.floor(Math.random() * HEART_CHARS.length)];
+    const spread = (Math.random() - 0.5) * 90;
+    el.style.left = (centerX + spread) + 'px';
+    el.style.bottom = (44 + Math.random() * 50) + 'px';
+    el.style.animationDelay = (i * 0.06) + 's';
+    if (el.classList.contains('burst')) {
+      el.style.setProperty('--hx', (spread * 0.6) + 'px');
+    }
+    layer.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
 
 function updateMoneyDisplay() {
   document.getElementById('money-amount').textContent = Math.floor(S.money);
 }
 
+function stockSubText(type, count) {
+  if (count === 0) return 'sem estoque — vá ao mercadinho';
+  if (count === 1) return type === 'food' ? '1 ração disponível' : '1 água disponível';
+  return type === 'food' ? `${count} rações disponíveis` : `${count} águas disponíveis`;
+}
+
+function stockSubClass(count) {
+  if (count === 0) return 'stock-none';
+  if (count <= 2) return 'stock-low';
+  return 'stock-ok';
+}
+
+function updateStockDisplay() {
+  const food = inventory.food || 0;
+  const water = inventory.water || 0;
+
+  document.getElementById('stock-food-count').textContent = food;
+  document.getElementById('stock-water-count').textContent = water;
+
+  const foodPill = document.getElementById('stock-food-pill');
+  const waterPill = document.getElementById('stock-water-pill');
+  foodPill.classList.toggle('stock-empty', food === 0);
+  waterPill.classList.toggle('stock-empty', water === 0);
+
+  document.getElementById('stock-food-unit').textContent =
+    food === 0 ? 'compre no mercadinho!' : food === 1 ? 'unidade' : 'unidades';
+  document.getElementById('stock-water-unit').textContent =
+    water === 0 ? 'compre no mercadinho!' : water === 1 ? 'unidade' : 'unidades';
+
+  const foodSub = document.getElementById('sub-food');
+  const waterSub = document.getElementById('sub-water');
+  const foodBtn = document.getElementById('btn-food');
+  const waterBtn = document.getElementById('btn-water');
+
+  if (foodSub) {
+    foodSub.textContent = stockSubText('food', food);
+    foodSub.className = 'sub ' + stockSubClass(food);
+  }
+  if (waterSub) {
+    waterSub.textContent = stockSubText('water', water);
+    waterSub.className = 'sub ' + stockSubClass(water);
+  }
+  if (foodBtn) foodBtn.classList.toggle('disabled', food === 0);
+  if (waterBtn) waterBtn.classList.toggle('disabled', water === 0);
+}
+
 function addMoney(amount) {
   S.money += amount;
   updateMoneyDisplay();
-  renderShop();
+  persistGame();
 }
 
 function addXP(amount) {
@@ -682,6 +681,7 @@ function addXP(amount) {
   }
   
   updateLevelUI();
+  persistGame();
 }
 
 function updateLevelUI() {
@@ -741,42 +741,7 @@ function updateUI() {
   updatePoodleImg();
   updateMoneyDisplay();
   updateLevelUI();
-}
-
-function buyItem(item) {
-  if (S.sleeping) { wakeUp(); }
-  if (S.money >= item.price) {
-    S.money -= item.price;
-    updateMoneyDisplay();
-    
-    // Adiciona ao inventário
-    if (item.type === 'food') {
-      inventory.food += (item.uses || 1);
-    } else if (item.type === 'water') {
-      inventory.water += (item.uses || 1);
-    } else {
-      // Petisco aplica efeito imediato
-      if (item.effect.hunger) S.hunger = clamp(S.hunger + item.effect.hunger);
-      if (item.effect.water) S.water = clamp(S.water + item.effect.water);
-      if (item.effect.happy) S.happy = clamp(S.happy + item.effect.happy);
-      if (item.effect.energy) S.energy = clamp(S.energy + item.effect.energy);
-      floatItem(item.icon);
-      msg(`${item.name} comprado e usado! ${rnd(MSGS.buy)}`);
-      animPoodle('boing');
-      updateUI();
-      renderShop();
-      return;
-    }
-    
-    floatItem(item.icon);
-    msg(`${item.name} comprado! (+${item.uses || 1} uso(s)) ${rnd(MSGS.buy)}`);
-    animPoodle('boing');
-    updateUI();
-    renderShop();
-  } else {
-    msg(`Faltam ${(item.price - S.money).toFixed(0)} moedas para comprar ${item.name}... ${rnd(MSGS.noMoney)}`);
-    animPoodle('wiggle');
-  }
+  updateStockDisplay();
 }
 
 function useFood() {
@@ -789,7 +754,7 @@ function useFood() {
     msg(`🍖 Comida deliciosa! +25 fome. Restam ${inventory.food} rações.`);
     animPoodle('boing');
     updateUI();
-    renderShop();
+    persistGame();
   } else {
     msg(rnd(MSGS.noFood));
     animPoodle('wiggle');
@@ -806,44 +771,11 @@ function useWater() {
     msg(`💧 Água fresquinha! +20 água. Restam ${inventory.water} águas.`);
     animPoodle('boing');
     updateUI();
-    renderShop();
+    persistGame();
   } else {
     msg(rnd(MSGS.noWater));
     animPoodle('wiggle');
   }
-}
-
-function renderShop() {
-  const inventoryHTML = `
-    <div style="display: flex; justify-content: space-between; gap: 8px; margin-bottom: 12px;">
-      <div class="inventory-badge">🍖 Estoque: ${inventory.food}</div>
-      <div class="inventory-badge">💧 Estoque: ${inventory.water}</div>
-    </div>
-  `;
-  
-  const shopHTML = `
-    <div class="sec-desc">🛒 compre para alimentar ${poodleName}! 🪙</div>
-    ${inventoryHTML}
-    ${SHOP_ITEMS.map(item => `
-      <div class="shop-item">
-        <div class="shop-item-info">
-          <div class="shop-item-icon">${item.icon}</div>
-          <div class="shop-item-details">
-            <div class="shop-item-name">${item.name}</div>
-            <div class="shop-item-desc">${item.desc}</div>
-          </div>
-        </div>
-        <div class="shop-item-price">
-          🪙 ${item.price}
-          <button class="shop-buy-btn" onclick="buyItem(${JSON.stringify(item).replace(/"/g, '&quot;')})">Comprar</button>
-        </div>
-      </div>
-    `).join('')}
-    <div style="margin-top: 12px; padding: 8px; background: #fff3e0; border-radius: 10px; text-align: center; font-size: 11px; color: #e65100;">
-      💡 Dica: Dê carinho no poodle para ganhar +2 moedas e +5 XP!
-    </div>
-  `;
-  return shopHTML;
 }
 
 function renderSection(dir = 1) {
@@ -860,17 +792,22 @@ function renderSection(dir = 1) {
     `<div class="dot${i===curSec?' active':''}"></div>`
   ).join('');
 
-  if (sec.isShop) {
-    card.innerHTML = renderShop();
-  } else {
-    const btns = sec.btns.map(b => {
-      const idAttr = b.id ? `id="${b.id}"` : '';
-      return `<button class="act-btn" ${idAttr} onclick="${b.fn}">${b.icon}<span class="lbl">${b.lbl}</span><span class="sub">${b.sub}</span></button>`;
-    }).join('');
-    card.innerHTML = `<div class="sec-desc">${sec.desc}</div><div class="btn-grid ${sec.cols}">${btns}</div>`;
-  }
+  const btns = sec.btns.map(b => {
+    const idAttr = b.id ? `id="${b.id}"` : (b.stock ? `id="btn-${b.stock}"` : '');
+    let subHtml;
+    if (b.stock) {
+      const count = b.stock === 'food' ? (inventory.food || 0) : (inventory.water || 0);
+      const disabled = count === 0 ? ' disabled' : '';
+      subHtml = `<span class="sub ${stockSubClass(count)}" id="sub-${b.stock}">${stockSubText(b.stock, count)}</span>`;
+      return `<button class="act-btn${disabled}" ${idAttr} onclick="${b.fn}">${b.icon}<span class="lbl">${b.lbl}</span>${subHtml}</button>`;
+    }
+    subHtml = `<span class="sub">${b.sub || ''}</span>`;
+    return `<button class="act-btn" ${idAttr} onclick="${b.fn}">${b.icon}<span class="lbl">${b.lbl}</span>${subHtml}</button>`;
+  }).join('');
+  card.innerHTML = `<div class="sec-desc">${sec.desc}</div><div class="btn-grid ${sec.cols}">${btns}</div>`;
   card.offsetHeight;
   card.style.animation = 'slideIn 0.28s ease forwards';
+  updateStockDisplay();
 }
 
 function nextSec() {
@@ -894,9 +831,12 @@ function petPoodle() {
   S.happy = clamp(S.happy + 5);
   addMoney(2);
   addXP(5);
+  spawnHearts(5 + Math.floor(Math.random() * 3));
+  floatItem('💕');
   msg(rnd(MSGS.pet) + " +2🪙 +5 XP");
   animPoodle('boing');
   updateUI();
+  persistGame();
 }
 
 function play() {
@@ -905,7 +845,7 @@ function play() {
   S.happy = clamp(S.happy + 20); S.energy = clamp(S.energy - 15);
   S.hunger = clamp(S.hunger - 8); S.water = clamp(S.water - 8);
   addXP(8);
-  floatItem('⚽'); msg(rnd(MSGS.play) + " +8 XP"); animPoodle('wiggle'); updateUI();
+  floatItem('⚽'); msg(rnd(MSGS.play) + " +8 XP"); animPoodle('wiggle'); updateUI(); persistGame();
 }
 
 function walk() {
@@ -914,21 +854,21 @@ function walk() {
   S.happy = clamp(S.happy + 25); S.energy = clamp(S.energy - 20);
   S.hunger = clamp(S.hunger - 12); S.water = clamp(S.water - 12);
   addXP(10);
-  floatItem('🌳'); msg(rnd(MSGS.walk) + " +10 XP"); animPoodle('wiggle'); updateUI();
+  floatItem('🌳'); msg(rnd(MSGS.walk) + " +10 XP"); animPoodle('wiggle'); updateUI(); persistGame();
 }
 
 function groom() {
   if (S.sleeping) { wakeUp(); return; }
   S.happy = clamp(S.happy + 15);
   addXP(5);
-  floatItem('✂️'); msg(rnd(MSGS.groom) + " +5 XP"); animPoodle('boing'); updateUI();
+  floatItem('✂️'); msg(rnd(MSGS.groom) + " +5 XP"); animPoodle('boing'); updateUI(); persistGame();
 }
 
 function bath() {
   if (S.sleeping) { wakeUp(); return; }
   S.happy = clamp(S.happy + 20); S.water = clamp(S.water + 10);
   addXP(6);
-  floatItem('🫧'); msg(rnd(MSGS.bath) + " +6 XP"); animPoodle('boing'); updateUI();
+  floatItem('🫧'); msg(rnd(MSGS.bath) + " +6 XP"); animPoodle('boing'); updateUI(); persistGame();
 }
 
 function toggleSleep() { S.sleeping ? wakeUp() : goSleep(); }
@@ -938,7 +878,7 @@ function goSleep() {
   const b = document.getElementById('sleep-btn');
   if (b) b.querySelector('.lbl').textContent = 'Acordar';
   document.getElementById('zzz').style.animation = 'floatzz 1.8s ease infinite';
-  msg(rnd(MSGS.sleep)); updateUI();
+  msg(rnd(MSGS.sleep)); updateUI(); persistGame();
   sleepInt = setInterval(() => {
     S.energy = clamp(S.energy + 6); S.hunger = clamp(S.hunger - 1.5); S.water = clamp(S.water - 1.5);
     addXP(1);
@@ -954,7 +894,7 @@ function wakeUp() {
   document.getElementById('zzz').style.animation = 'none';
   const b = document.getElementById('sleep-btn');
   if (b) b.querySelector('.lbl').textContent = 'Dormir';
-  msg(rnd(MSGS.wake)); updateUI();
+  msg(rnd(MSGS.wake)); updateUI(); persistGame();
 }
 
 setInterval(() => {
@@ -972,11 +912,26 @@ setInterval(() => {
     else if (S.happy === low && S.happy < 30) msg(rnd(MSGS.sad));
   }
   updateUI();
+  persistGame();
 }, 3500);
 
+window.addEventListener('beforeunload', persistGame);
+
+window.addEventListener('focus', () => {
+  const fresh = loadGameState();
+  inventory = fresh.inventory;
+  S.money = fresh.money;
+  updateUI();
+});
+
 (function init() {
-  poodleName = sessionStorage.getItem('poodleName') || 'Poodle';
-  isTimao = poodleName.toLowerCase() === 'timao';
+  if (!sessionStorage.getItem('poodleName')) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  poodleName = getPoodleName();
+  isTimao = isTimaoSkin();
 
   document.getElementById('name-display').textContent = poodleName;
   document.title = `${poodleName} — Petit Poodle`;
@@ -984,12 +939,7 @@ setInterval(() => {
   if (isTimao) {
     document.getElementById('timao-badge').classList.add('show');
     document.getElementById('poodle-img').src = 'timao.png';
-    document.querySelector(':root').style.setProperty('--pink',   '#666');
-    document.querySelector(':root').style.setProperty('--pink-d', '#111');
-    document.querySelector(':root').style.setProperty('--pink-l', '#f0f0f0');
-    document.querySelector(':root').style.setProperty('--bg',     '#f5f5f5');
-    document.querySelector(':root').style.setProperty('--text',   '#1a1a1a');
-    document.querySelector(':root').style.setProperty('--muted',  '#555');
+    applyTimaoTheme();
     msg(`Vai Timão! ⚫⚪ Cuide bem do ${poodleName}!`);
   } else {
     msg(`Oi! Meu nome é ${poodleName}! Preciso de comida e água! 🥺`);
@@ -998,6 +948,7 @@ setInterval(() => {
   renderSection(1);
   updateUI();
   updateMoneyDisplay();
+  persistGame();
 })();
 </script>
 </body>

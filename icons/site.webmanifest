@@ -1,0 +1,17 @@
+{
+  "name": "Petit Poodle",
+  "short_name": "Poodle",
+  "description": "Cuide do seu poodle virtual!",
+  "start_url": "../index.html",
+  "display": "standalone",
+  "background_color": "#fff0f7",
+  "theme_color": "#f06292",
+  "icons": [
+    {
+      "src": "icon-poodle.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
