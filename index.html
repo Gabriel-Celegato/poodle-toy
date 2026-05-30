@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Petit Poodle</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink:    #f06292;
+    --pink-d:  #c2185b;
+    --pink-l:  #fce4ec;
+    --purple:  #ce93d8;
+    --bg:      #fff0f7;
+    --card:    #ffffff;
+    --text:    #4a1942;
+    --muted:   #b06090;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+  }
+
+  .bg-blobs {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+  }
+  .blob1 { width: 340px; height: 340px; background: #f8bbd0; top: -80px; left: -80px; animation: drift 8s ease-in-out infinite alternate; }
+  .blob2 { width: 260px; height: 260px; background: #e1bee7; bottom: -60px; right: -60px; animation: drift 10s ease-in-out infinite alternate-reverse; }
+  .blob3 { width: 180px; height: 180px; background: #f48fb1; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: drift 7s ease-in-out infinite alternate; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(20px, 15px); }
+  }
+
+  .card {
+    position: relative; z-index: 1;
+    background: var(--card);
+    border-radius: 28px;
+    padding: 44px 40px 40px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(200, 80, 140, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .poodle-preview {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 16px rgba(200,80,140,0.2));
+  }
+
+  .poodle-svg-preview {
+    width: 130px; height: 130px;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 16px rgba(200,80,140,0.2));
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0px); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .paw-row {
+    display: flex; gap: 8px; font-size: 20px;
+    animation: fadeSlide 0.5s 0.15s both;
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.1;
+    animation: fadeSlide 0.5s 0.2s both;
+  }
+  h1 span { color: var(--pink); }
+
+  p.sub {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+    animation: fadeSlide 0.5s 0.3s both;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .input-wrap {
+    width: 100%;
+    animation: fadeSlide 0.5s 0.4s both;
+    position: relative;
+  }
+
+  .input-wrap label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .input-wrap input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #f8d0e8;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--pink-l);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .input-wrap input::placeholder { color: #d4a0c0; font-weight: 400; letter-spacing: 0; }
+  .input-wrap input:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(240,98,146,0.12);
+    background: white;
+  }
+
+  .hint {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #c994b8;
+    text-align: center;
+    min-height: 16px;
+    transition: all 0.3s;
+  }
+  .hint.special { color: var(--pink-d); font-weight: 700; }
+
+  .btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--pink);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(240,98,146,0.35);
+    animation: fadeSlide 0.5s 0.5s both;
+  }
+  .btn:hover { background: var(--pink-d); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,98,146,0.4); }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .paw-footer {
+    font-size: 12px;
+    color: #d4a0c0;
+    animation: fadeSlide 0.5s 0.6s both;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+
+<div class="card">
+
+  <img src="poodle.png" class="poodle-preview" alt="poodle" onerror="this.style.display='none'; document.getElementById('poodle-fallback').style.display='block'"/>
+  <svg id="poodle-fallback" style="display:none" class="poodle-svg-preview" viewBox="0 0 140 162" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="70" cy="108" rx="38" ry="30" fill="#f3e5f5"/>
+    <circle cx="50" cy="98" r="14" fill="#f8f0fc"/><circle cx="90" cy="98" r="14" fill="#f8f0fc"/>
+    <circle cx="70" cy="88" r="16" fill="#f8f0fc"/>
+    <circle cx="58" cy="112" r="13" fill="#f8f0fc"/><circle cx="82" cy="112" r="13" fill="#f8f0fc"/>
+    <circle cx="70" cy="120" r="11" fill="#ede0f2"/>
+    <rect x="62" y="75" width="16" height="18" rx="5" fill="#e8d5f0"/>
+    <ellipse cx="70" cy="77" rx="10" ry="5" fill="#f48fb1"/>
+    <ellipse cx="62" cy="75" rx="7" ry="4" fill="#f06292" transform="rotate(-20 62 75)"/>
+    <ellipse cx="78" cy="75" rx="7" ry="4" fill="#f06292" transform="rotate(20 78 75)"/>
+    <circle cx="70" cy="77" r="4" fill="#ec407a"/>
+    <circle cx="70" cy="55" r="24" fill="#f3e5f5"/>
+    <circle cx="47" cy="51" r="12" fill="#f8f0fc"/><circle cx="93" cy="51" r="12" fill="#f8f0fc"/>
+    <circle cx="70" cy="35" r="13" fill="#f8f0fc"/>
+    <circle cx="54" cy="42" r="11" fill="#f8f0fc"/><circle cx="86" cy="42" r="11" fill="#f8f0fc"/>
+    <ellipse cx="47" cy="65" rx="9" ry="14" fill="#e1bee7" transform="rotate(-15 47 65)"/>
+    <ellipse cx="93" cy="65" rx="9" ry="14" fill="#e1bee7" transform="rotate(15 93 65)"/>
+    <circle cx="60" cy="53" r="6" fill="#4a148c"/><circle cx="80" cy="53" r="6" fill="#4a148c"/>
+    <circle cx="62" cy="51" r="2" fill="white"/><circle cx="82" cy="51" r="2" fill="white"/>
+    <ellipse cx="70" cy="62" rx="5" ry="3.5" fill="#880e4f"/>
+    <path d="M63 67 Q70 73 77 67" stroke="#880e4f" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <circle cx="46" cy="134" r="10" fill="#f8f0fc"/><circle cx="94" cy="134" r="10" fill="#f8f0fc"/>
+    <circle cx="46" cy="130" r="8" fill="#ede0f2"/><circle cx="94" cy="130" r="8" fill="#ede0f2"/>
+    <circle cx="112" cy="103" r="10" fill="#f8f0fc"/><circle cx="119" cy="99" r="8" fill="#f3e5f5"/>
+  </svg>
+
+  <div class="paw-row">🐾 🐾 🐾</div>
+
+  <h1>Bem-vindo ao<br/><span>Petit Poodle!</span></h1>
+
+  <p class="sub">Antes de começar, dê um nome ao seu poodlezinho. Ele vai te amar muito!</p>
+
+  <div class="input-wrap">
+    <label>Nome do seu poodle</label>
+    <input
+      type="text"
+      id="nome-input"
+      placeholder="ex: Bolinha, Luna..."
+      maxlength="20"
+      autocomplete="off"
+      oninput="onInput(this.value)"
+      onkeydown="if(event.key==='Enter') comecar()"
+    />
+    <div class="hint" id="hint">escolha um nome fofo!</div>
+  </div>
+
+  <button class="btn" id="btn-comecar" onclick="comecar()" disabled>
+    Brincar! 🐩
+  </button>
+
+  <div class="paw-footer">feito com muito amor 🩷</div>
+</div>
+
+<script>
+function onInput(val) {
+  const clean = val.trim();
+  const btn = document.getElementById('btn-comecar');
+  const hint = document.getElementById('hint');
+
+  btn.disabled = clean.length === 0;
+
+  if (clean.toLowerCase() === 'timao') {
+    hint.textContent = '⚫⚪ skin especial desbloqueada!';
+    hint.className = 'hint special';
+  } else if (clean.length > 0) {
+    hint.textContent = `seu poodle vai se chamar "${clean}"!`;
+    hint.className = 'hint';
+  } else {
+    hint.textContent = 'escolha um nome fofo!';
+    hint.className = 'hint';
+  }
+}
+
+function comecar() {
+  const nome = document.getElementById('nome-input').value.trim();
+  if (!nome) return;
+  sessionStorage.setItem('poodleName', nome);
+  window.location.href = 'game.html';
+}
+</script>
+</body>
+</html>
